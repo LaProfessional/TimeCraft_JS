@@ -36,7 +36,7 @@ app.get('/task-details', (req, response) => {
     response.sendFile(path.resolve('public/tasks-task.html'));
 });
 app.get('/task-entry', (req, response) => {
-   response.sendFile(path.resolve('public/tasks-entry.html'));
+   response.sendFile(path.resolve('public/tasks-login.html'));
 });
 
 app.get('/tasks', async (req, response) => {
