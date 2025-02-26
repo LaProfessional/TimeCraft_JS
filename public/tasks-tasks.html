@@ -303,13 +303,13 @@
 			}
 		}
 		return null;
-	}
+	};
 	if (!getCookie('username')) {
 		window.location.href = '/task-login';
 	}
 
 	const btnExitEl = document.querySelector('.btn-exit');
-	btnExitEl.addEventListener('click', () => window.location.href = '/task-entry');
+	btnExitEl.addEventListener('click', () => window.location.href = '/task-login');
 
 	const createTaskBtnEl = document.querySelector('.create-task-btn');
 	createTaskBtnEl.addEventListener('click', () => window.location.href = '/task-create');
@@ -320,10 +320,6 @@
 		const taskId = checkboxCheckedEl.taskId;
 		window.location.href = `task-edit?id=${ taskId }`;
 	});
-
-	const updateTasksCount = (tasks, portionLength) => {
-
-	}
 
 	const deleteTaskBtnEl = document.querySelector('.delete-task-btn');
 	deleteTaskBtnEl.addEventListener('click', () => {
