@@ -484,7 +484,7 @@
 			renderTask(task);
 		});
 
-		titleEl.innerText = `Задачи ${tasks.length}`;
+		titleEl.innerText = `Задачи ${tasks.length + parseInt(tasksCount)}`;
 
 		const checkboxEls = [ ...document.querySelectorAll('.checkbox') ];
 		checkboxEls.forEach(checkboxEl => {
