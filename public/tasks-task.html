@@ -59,7 +59,7 @@
             margin-right: 15px;
         }
 
-        .close {
+        .btn-close {
             position: absolute;
             right: 0;
 
@@ -75,7 +75,7 @@
             cursor: pointer;
         }
 
-        .close:hover {
+        .btn-close:hover {
             transform: rotate(90deg) scale(1.2);
             filter: brightness(0) saturate(100%) invert(50%) sepia(80%) saturate(500%) hue-rotate(350deg);
         }
@@ -163,7 +163,7 @@
     <div class="container">
         <header class="header">
             <h1 class="title">Просмотр задачи</h1>
-            <button class="close"></button>
+            <button class="btn-close"></button>
         </header>
 
         <section class="details">
@@ -248,6 +248,9 @@
 
     const btnBackEl = document.querySelector('.btn-back');
     btnBackEl.addEventListener('click', () => history.back());
+
+    const btnCloseEl = document.querySelector('.btn-close');
+    btnCloseEl.addEventListener('click', () => window.location.href='/');
 </script>
 </body>
 </html>

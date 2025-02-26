@@ -59,7 +59,7 @@
             margin-right: 15px;
         }
 
-        .close {
+        .btn-close {
             position: absolute;
             right: 0;
 
@@ -75,7 +75,7 @@
             cursor: pointer;
         }
 
-        .close:hover {
+        .btn-close:hover {
             transform: rotate(90deg) scale(1.2);
             filter: brightness(0) saturate(100%) invert(50%) sepia(80%) saturate(500%) hue-rotate(350deg);
         }
@@ -227,7 +227,7 @@
 	<div class="container">
 		<header class="header">
 			<h1 class="title">Новая задача</h1>
-			<button class="close"></button>
+			<button class="btn-close"></button>
 		</header>
 
 		<section class="details">
@@ -271,10 +271,14 @@
 	const titleEl = document.querySelector('.title');
 	const btnSaveEl = document.querySelector('.btn-save');
 	const btnCancelEl = document.querySelector('.btn-cancel');
+	const btnCloseEl = document.querySelector('.btn-close');
 	const startDateEl = document.querySelector('.start-date');
 	const startTimeEl = document.querySelector('.start-time');
 	const endDateEl = document.querySelector('.end-date');
 	const inputEls = [ ...document.querySelectorAll('.input') ];
+
+	btnCancelEl.addEventListener('click', () => history.back());
+	btnCloseEl.addEventListener('click', () => window.location.href='/');
 
 	startDateEl.valueAsDate = new Date();
 	const now = new Date();
@@ -376,8 +380,6 @@
 			});
 		}
 	});
-
-	btnCancelEl.addEventListener('click', () => history.back());
 
 	if (taskId) {
 		titleEl.innerText = 'Редактирование задачи';

@@ -307,6 +307,10 @@
 		window.location.href = `task-edit?id=${ taskId }`;
 	});
 
+	const updateTasksCount = (tasks, portionLength) => {
+
+	}
+
 	const deleteTaskBtnEl = document.querySelector('.delete-task-btn');
 	deleteTaskBtnEl.addEventListener('click', () => {
 		const checkboxCheckedEls = [ ...document.querySelectorAll('.checkbox:checked') ];
@@ -325,7 +329,13 @@
 			});
 
 			const tableRowEls = [ ...document.querySelectorAll('.table-row') ];
-			if (!tableRowEls.length) noTasksMessageEl.classList.remove('hidden');
+			titleEl.innerText = `Задачи ${tableRowEls.length}`;
+
+			if (!tableRowEls.length) {
+				titleEl.innerText = `Задачи`;
+				noTasksMessageEl.classList.remove('hidden');
+			}
+
 			headerCheckboxEl.checked = false;
 			updateActionButtons();
 		});
@@ -464,7 +474,7 @@
 			renderTask(task);
 		});
 
-		titleEl.innerText = `Задачи ${ tasks.length + parseInt(portionLength) }`;
+		titleEl.innerText = `Задачи ${tasks.length}`;
 
 		const checkboxEls = [ ...document.querySelectorAll('.checkbox') ];
 		checkboxEls.forEach(checkboxEl => {
