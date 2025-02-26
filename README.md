@@ -1,1 +1,1 @@
-http://timecraft.delfinnnn.online/tasks-login
+http://timecraft.delfinnnn.online//task-login
