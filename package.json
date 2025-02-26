@@ -1,0 +1,26 @@
+{
+  "homepage": "https://TopTTeDHbIu-DeJLbFuH4uk.github.io/TimeCraft",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "private": true,
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "eslint": "^8.57.0",
+    "express": "^4.21.2",
+    "pg": "^8.13.3",
+    "postcss-html": "^1.6.0",
+    "stylelint": "^16.2.1"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "nodemon": "^3.1.9"
+  }
+}

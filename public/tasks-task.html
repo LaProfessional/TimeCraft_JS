@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+    </style>
+    <title>TimeCraft</title>
+    <link rel="icon" href="images/logo.svg">
+    <!-- STYLES -->
+    <link rel="stylesheet" href="./styles/main.css">
+    <style>
+        .create-task {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 5px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-rows: 50px 1fr 70px;
+            width: clamp(100px, 100%, 520px);
+            min-height: auto;
+            max-height: 90vh;
+
+            background: linear-gradient(135deg, #ff8c00, #fcbf49);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            position: relative;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            border-bottom: 1px solid #000;
+
+            padding: 10px;
+        }
+
+        .title {
+            font-size: 18px;
+            margin-right: 15px;
+        }
+
+        .close {
+            position: absolute;
+            right: 0;
+
+            background: url("images/close_icon.svg") no-repeat center;
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+
+            fill: #5a3825;
+            filter: brightness(0) saturate(100%) invert(15%) sepia(42%) saturate(500%) hue-rotate(10deg);
+            transition: transform 0.2s, filter 0.3s;
+
+            cursor: pointer;
+        }
+
+        .close:hover {
+            transform: rotate(90deg) scale(1.2);
+            filter: brightness(0) saturate(100%) invert(50%) sepia(80%) saturate(500%) hue-rotate(350deg);
+        }
+
+        .details {
+            max-height: 406px;
+
+            overflow: hidden;
+            overflow-y: auto;
+
+            scrollbar-width: thin;
+            scrollbar-color: #4b7d5f #f4e1b2;
+
+            padding: 10px 10px 0 10px;
+        }
+
+        .content-block {
+            margin-bottom: 15px;
+        }
+
+        .block-title {
+            margin-bottom: 5px;
+        }
+
+        .description {
+            word-break: break-word;
+        }
+
+        .footer {
+            position: relative;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+
+            border-top: 1px solid #000;
+
+            padding: 10px;
+        }
+
+        .btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 100%;
+            height: 50px;
+            border-radius: 8px;
+            border: 1px solid #c89666;
+
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+
+            transition: background-color 0.3s, border-color 0.3s;
+
+            cursor: pointer;
+        }
+
+        .btn-edit {
+            background-color: #4a7c50;
+            border: 1px solid #4a7c50;
+        }
+
+        .btn-edit:hover {
+            background-color: #6a9f6b;
+            border-color: #6a9f6b;
+        }
+
+        .btn-back {
+            background-color: #d98f5b;
+            border: 1px solid #d98f5b;
+        }
+
+        .btn-back:hover {
+            background-color: #b77a45;
+            border-color: #b77a45;
+        }
+    </style>
+</head>
+<body>
+
+<div class="create-task">
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Просмотр задачи</h1>
+            <button class="close"></button>
+        </header>
+
+        <section class="details">
+            <div class="content-block">
+                <h2 class="block-title">Название задачи:</h2>
+                <p class="description" data-id="title"></p>
+            </div>
+
+            <div class="content-block">
+                <h2 class="block-title">Описание задачи:</h2>
+                <p class="description" data-id="description"></p>
+            </div>
+
+            <div class="content-block">
+                <h2 class="block-title">Дата начала:</h2>
+                <time class="description" data-id="startDatetime"></time>
+            </div>
+
+            <div class="content-block">
+                <h2 class="block-title">Дата окончания:</h2>
+                <time class="description" data-id="endDatetime"></time>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <button class="btn btn-edit">Редактировать</button>
+            <button class="btn btn-back">Назад</button>
+        </footer>
+    </div>
+</div>
+<script>
+    const descriptionEls = [ ...document.querySelectorAll('.description') ];
+
+    const params = new URLSearchParams(window.location.search);
+    const taskId = params.get('id');
+
+    const getTask = () => {
+        return fetch(`/tasks/?id=${ taskId }`).then(response => {
+            return response.json();
+        });
+    };
+    getTask().then(task => {
+        const {
+            id,
+            creationDatetime,
+            title,
+            description,
+            startDatetime,
+            endDatetime,
+        } = task;
+
+        descriptionEls.forEach(descriptionEl => {
+            descriptionEl.innerText = (() => {
+                switch (descriptionEl.dataset.id) {
+                    case 'startDatetime':
+                        return new Intl.DateTimeFormat(navigator.language, {
+                            year: 'numeric',
+                            month: 'short',
+                            weekday: 'short',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        }).format(new Date(startDatetime));
+                    case 'endDatetime':
+                        return new Intl.DateTimeFormat(navigator.language, {
+                            year: 'numeric',
+                            month: 'short',
+                            weekday: 'short',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        }).format(new Date(endDatetime));
+                    default:
+                        return descriptionEl.innerText = task[descriptionEl.dataset.id];
+                }
+            })();
+        });
+    });
+
+    const btnEdit = document.querySelector('.btn-edit');
+    btnEdit.addEventListener('click', () => window.location.href = `/task-edit?id=${ taskId }`);
+
+    const btnBackEl = document.querySelector('.btn-back');
+    btnBackEl.addEventListener('click', () => history.back());
+</script>
+</body>
+</html>

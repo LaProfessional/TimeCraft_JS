@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+	</style>
+	<title>TimeCraft</title>
+	<link rel="icon" href="images/logo.svg">
+	<!-- STYLES -->
+	<link rel="stylesheet" href="./styles/main.css">
+	<style>
+        .create-task {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 5px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-rows: 50px 1fr 70px;
+            width: clamp(100px, 100%, 520px);
+            min-height: auto;
+            max-height: 90vh;
+
+            background: linear-gradient(135deg, #ff8c00, #fcbf49);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            position: relative;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            border-bottom: 1px solid #000;
+
+            padding: 10px;
+        }
+
+        .title {
+            font-size: 18px;
+            margin-right: 15px;
+        }
+
+        .close {
+            position: absolute;
+            right: 0;
+
+            background: url("images/close_icon.svg") no-repeat center;
+            width: 40px;
+            height: 40px;
+            border-radius: 100%;
+
+            fill: #5a3825;
+            filter: brightness(0) saturate(100%) invert(15%) sepia(42%) saturate(500%) hue-rotate(10deg);
+            transition: transform 0.2s, filter 0.3s;
+
+            cursor: pointer;
+        }
+
+        .close:hover {
+            transform: rotate(90deg) scale(1.2);
+            filter: brightness(0) saturate(100%) invert(50%) sepia(80%) saturate(500%) hue-rotate(350deg);
+        }
+
+        .details {
+            max-height: 406px;
+
+            overflow: hidden;
+            overflow-y: auto;
+
+            scrollbar-width: thin;
+            scrollbar-color: #4b7d5f #f4e1b2;
+
+            padding: 10px 10px 0 10px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .block-title {
+            margin-bottom: 5px;
+        }
+
+        .label {
+            font-weight: 500;
+            color: #5a3825;
+            letter-spacing: 0.8px;
+
+            user-select: none;
+        }
+
+        .input {
+            width: 100%;
+            height: 40px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            background: #fff;
+
+            padding: 5px;
+
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        .input-date:hover,
+        .input:hover {
+            border-color: #c89666;
+        }
+
+        .input-date:focus,
+        .input:focus {
+            border-color: #a56a3a;
+            box-shadow: 0 0 5px rgba(165, 106, 58, 0.5);
+            outline: none;
+        }
+
+        .input-date::placeholder,
+        .input::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .input-date {
+            width: clamp(100px, 100%, 140px);
+        }
+
+        .invalid {
+			border: 2px solid #ff0000;
+        }
+
+        #description {
+            resize: vertical;
+            width: 100%;
+            height: 60px;
+
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            background: #fff;
+
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        #description:hover {
+            border-color: #c89666;
+        }
+
+        .date-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .footer {
+            position: relative;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+
+            border-top: 1px solid #000;
+
+            padding: 10px;
+        }
+
+        .btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 100%;
+            height: 50px;
+            border-radius: 8px;
+            border: 1px solid #c89666;
+
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+
+            transition: background-color 0.3s, border-color 0.3s;
+
+            cursor: pointer;
+        }
+
+        .btn-save {
+            background-color: #4a7c50;
+            border: 1px solid #4a7c50;
+        }
+
+        .btn-save:hover {
+            background-color: #6a9f6b;
+            border-color: #6a9f6b;
+        }
+
+        .btn-cancel {
+            background-color: #d98f5b;
+            border: 1px solid #d98f5b;
+        }
+
+        .btn-cancel:hover {
+            background-color: #b77a45;
+            border-color: #b77a45;
+        }
+	</style>
+</head>
+<body>
+
+<div class="create-task">
+	<div class="container">
+		<header class="header">
+			<h1 class="title">Новая задача</h1>
+			<button class="close"></button>
+		</header>
+
+		<section class="details">
+			<div class="input-group">
+				<label for="title" class="label block-title">Название задачи:</label>
+				<input id="title" class="input" type="text" placeholder="Задача" required>
+			</div>
+
+			<div class="input-group">
+				<label for="description" class="label block-title">Описание:</label>
+				<textarea id="description" class="input"></textarea>
+			</div>
+
+			<div class="input-group">
+				<label for="startDate" class="label block-title">Дата начала:</label>
+				<div class="date-group">
+					<input id="startDate" class="input input-date start-date" type="date" min="2000-01-01"
+						   max="2100-01-01" required>
+					<input id="startTime" class="input input-date start-time" type="time" required>
+				</div>
+			</div>
+
+			<div class="input-group">
+				<label for="endDate" class="label block-title">Дата окончания:</label>
+				<div class="date-group">
+					<input id="endDate" class="input input-date end-date" type="date" max="2100-01-01" min="2000-01-01"
+						   required>
+					<input id="endTime" class="input input-date" type="time" required>
+				</div>
+			</div>
+		</section>
+
+		<footer class="footer">
+			<button class="btn btn-save">Сохранить</button>
+			<button class="btn btn-cancel">Отмена</button>
+		</footer>
+	</div>
+</div>
+
+<script>
+	const titleEl = document.querySelector('.title');
+	const btnSaveEl = document.querySelector('.btn-save');
+	const btnCancelEl = document.querySelector('.btn-cancel');
+	const startDateEl = document.querySelector('.start-date');
+	const startTimeEl = document.querySelector('.start-time');
+	const endDateEl = document.querySelector('.end-date');
+	const inputEls = [ ...document.querySelectorAll('.input') ];
+
+	startDateEl.valueAsDate = new Date();
+	const now = new Date();
+	const hours = now.getHours().toString().padStart(2, '0');
+	const minutes = now.getMinutes().toString().padStart(2, '0');
+	startTimeEl.value = `${ hours }:${ minutes }`;
+
+	startDateEl.addEventListener('blur', () => {
+		const selectedDate = new Date(startDateEl.value);
+		const selectedYear = selectedDate.getFullYear();
+
+		if (selectedYear < 2000 || selectedYear > 2100 || !startDateEl.value) {
+			startDateEl.value = new Date().toISOString().slice(0, 10);
+		}
+	});
+	endDateEl.addEventListener('blur', () => {
+		const selectedDate = new Date(endDateEl.value);
+		const selectedYear = selectedDate.getFullYear();
+
+		const starSelectedDate = new Date(startDateEl.value);
+		const startYear = starSelectedDate.getFullYear();
+
+		if (selectedYear < startYear) {
+			endDateEl.value = startDateEl.value;
+		}
+		if (selectedYear > 2100) {
+			endDateEl.value = new Date().toISOString().slice(0, 10);
+		}
+	});
+
+	const params = new URLSearchParams(window.location.search);
+	const taskId = params.get('id');
+
+	const createTask = task => {
+		return fetch('/tasks', {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json',
+			},
+			body: JSON.stringify({ task }),
+		});
+	};
+
+	const updateTask = task => {
+		return fetch(`/tasks/?id=${ taskId }`, {
+			method: 'PATCH',
+			headers: {
+				'Content-type': 'application/json',
+			},
+			body: JSON.stringify({ task }),
+		});
+	};
+
+	const validate = () => {
+		const requiredInputEls = [ ...document.querySelectorAll('.input:required') ];
+
+		requiredInputEls.forEach(requiredInputEl => {
+			if (!requiredInputEl.value) {
+				requiredInputEl.classList.add('invalid');
+			} else {
+				requiredInputEl.classList.remove('invalid');
+			}
+		});
+		return requiredInputEls.some(requiredInputEl => requiredInputEl.classList.contains('invalid'));
+	};
+
+	btnSaveEl.addEventListener('click', () => {
+		const isInvalid = validate();
+		if (isInvalid) return;
+
+		btnSaveEl.disabled = true;
+		const task = {};
+
+		inputEls.forEach(inputEl => {
+			task[inputEl.id] = inputEl.value;
+		});
+
+		const startDatetime = new Date(`${ task.startDate } ${ task.startTime }`).toISOString();
+		const endDatetime = new Date(`${ task.endDate } ${ task.endTime }`).toISOString();
+
+		const newTask = {
+			title: task.title,
+			description: task.description,
+			startDatetime,
+			endDatetime,
+		};
+
+		if (taskId) {
+			updateTask(newTask).then(() => window.location.href = '/');
+		} else {
+			createTask(newTask).then(response => {
+				return response.json();
+			}).then(response => {
+				const newTask = {
+					...response,
+					...task,
+				};
+				window.location.href = '/';
+			});
+		}
+	});
+
+	btnCancelEl.addEventListener('click', () => history.back());
+
+	if (taskId) {
+		titleEl.innerText = 'Редактирование задачи';
+		const getTask = () => {
+			return fetch(`/tasks/?id=${ taskId }`).then(response => {
+				return response.json();
+			});
+		};
+		getTask().then(task => {
+			const {
+				id,
+				creationDatetime,
+				title,
+				description,
+				startDatetime,
+				endDatetime,
+			} = task;
+
+			inputEls.forEach(inputEl => {
+				inputEl.value = (() => {
+					switch (inputEl.id) {
+						case 'startDate':
+							return new Date(startDatetime).toISOString().split('T')[0];
+						case 'startTime':
+							return new Date(startDatetime).toISOString().split('T')[1].slice(0, 8);
+						case 'endDate':
+							return new Date(endDatetime).toISOString().split('T')[0];
+						case 'endTime':
+							return new Date(endDatetime).toISOString().split('T')[1].slice(0, 8)
+						default:
+							return task[inputEl.id];
+					}
+				})();
+			});
+		});
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+* {
+    font-family: "Kanit", sans-serif;
+    color: #5a3825;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: #2d545e;
+}
+
+h1, h2,
+h3, h4,
+h5, h6,
+p {
+    margin: 0;
+}
+
+ul, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    background-color: transparent;
+    border: transparent;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+label {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
