@@ -294,6 +294,20 @@
 </main>
 
 <script>
+	const getCookie = name => {
+		const cookies = document.cookie.split('; ');
+		for (let cookie of cookies) {
+			const [key, value] = cookie.split('=');
+			if (key === name) {
+				return value;
+			}
+		}
+		return null;
+	}
+	if (!getCookie('username')) {
+		window.location.href = '/tasks-login';
+	}
+
 	const btnExitEl = document.querySelector('.btn-exit');
 	btnExitEl.addEventListener('click', () => window.location.href = '/task-entry');
 
