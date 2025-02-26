@@ -1,1 +1,1 @@
-http://delfinnnn.online/task-entry
+http://delfinnnn.online/tasks-login
