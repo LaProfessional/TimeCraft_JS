@@ -11,86 +11,20 @@
 	<title>TimeCraft</title>
 	<link rel="icon" href="images/logo.svg">
 	<!-- STYLES -->
-	<link rel="stylesheet" href="./styles/main.css">
-
-	<style>
-        .window-entry-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-
-            padding: 10px;
-        }
-
-        .window-entry {
-            width: clamp(80px, 100%, 300px);
-            border-radius: 12px;
-            background-color: #ffffff;
-            padding: 15px;
-        }
-
-        .enter::after {
-            content: '';
-            display: flex;
-            border-bottom: 1px solid #000000;
-
-            padding-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .username-input {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        .username-input:focus {
-            outline: none;
-        }
-
-        .login-btn {
-            width: 100%;
-            height: 30px;
-
-            color: #000000;
-            background-color: #999999;
-            transition: all .2s ease-in-out;
-
-            cursor: pointer;
-        }
-
-        .login-btn:hover {
-            background-color: #f2f2f2;
-        }
-	</style>
+	<link rel="stylesheet" href="/styles/main.css">
+	<link rel="stylesheet" href="/styles/tasks-login.css">
+	<!-- SCRIPTS -->
+	<script defer src="scripts/tasks-login.js"></script>
 </head>
 <body>
 
 <div class="window-entry-container">
 	<div class="window-entry">
 		<h2 class="enter">Вход</h2>
-
 		<input class="username-input" type="text" placeholder="Имя пользователя">
 		<button class="login-btn">Войти</button>
 	</div>
 </div>
 
-<script>
-	const usernameInputEl = document.querySelector('.username-input');
-	const loginBtnEl = document.querySelector('.login-btn');
-	const maxAgeCookie = 31536000; // 1 Год
-
-	const login = () => {
-		if (!usernameInputEl.value) return;
-		const inputValue = usernameInputEl.value;
-		document.cookie = `username=${ inputValue }; path=/; max-age=${ maxAgeCookie }`;
-		window.location.href = '/';
-	};
-
-	loginBtnEl.addEventListener('click', () => login());
-	usernameInputEl.addEventListener('keydown', e => {
-		if (e.key === 'Enter') login();
-	});
-</script>
 </body>
 </html>
