@@ -51,13 +51,17 @@ app.get('/tasks', async (req, response) => {
     let tasks;
     const username = req.cookies.username;
 
-    const getTasksCount = async () => {
-        const getTasksCount = `
-            SELECT COUNT(*) FROM tasks
-        ;`;
+    const getTasksCount = async (search, username) => {
+        let countQuery = `SELECT COUNT(*) FROM tasks WHERE username = $1`;
+        let queryParams = [username];
 
-        const getTasksCountRes = await pool.query(getTasksCount);
-        return getTasksCountRes.rows[0].count;
+        if (search) {
+            countQuery += ` AND (title ILIKE $2 OR description ILIKE $2)`;
+            queryParams.push(`%${ search }%`);
+        }
+
+        const countRes = await pool.query(countQuery, queryParams);
+        return countRes.rows[0].count;
     };
     // ----------------------------------------------- //
     if (search) {
@@ -122,9 +126,12 @@ app.get('/tasks', async (req, response) => {
         return response.status(200).json(res);
     }
     // ----------------------------------------------- //
-    const tasksCount = await getTasksCount();
+    const tasksCountStr = await getTasksCount(search, username);
+    const tasksCount = parseInt(tasksCountStr);
+    const offsetCount = parseInt(offset);
+
     const res = tasks.map(task => convertToCamelCase(task));
-    return response.status(200).json( {tasks: res, tasksCount: tasksCount, portionLength: offset} );
+    return response.status(200).json( {tasks: res, tasksCount: tasksCount, portionLength: offsetCount} );
 });
 
 app.patch('/tasks', async (req, response) => {

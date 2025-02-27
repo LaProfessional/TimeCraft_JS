@@ -75,7 +75,7 @@
             cursor: pointer;
         }
 
-        .btn:hover {
+        .btn:hover:not(.edit-task-btn:disabled, .delete-task-btn:disabled) {
             opacity: 0.85;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
@@ -146,7 +146,7 @@
             display: flex;
             justify-content: center;
 
-			padding-top: 30px;
+            padding-top: 30px;
         }
 
         .author {
@@ -289,7 +289,8 @@
 	</div>
 	<div class="no-tasks-message">Задачи не найдены</div>
 	<div class="author-container">
-		<a class="author" href="https://github.com/TopTTeDHbIu-DeJLbFuH4uk/TimeCraft" target="_blank">Created by: TopTTeDHbIu-DeJLbFuH4uk</a>
+		<a class="author" href="https://github.com/TopTTeDHbIu-DeJLbFuH4uk/TimeCraft" target="_blank">Created by:
+			TopTTeDHbIu-DeJLbFuH4uk</a>
 	</div>
 </main>
 
@@ -297,7 +298,7 @@
 	const getCookie = name => {
 		const cookies = document.cookie.split('; ');
 		for (let cookie of cookies) {
-			const [key, value] = cookie.split('=');
+			const [ key, value ] = cookie.split('=');
 			if (key === name) {
 				return value;
 			}
@@ -338,9 +339,9 @@
 				checkboxEl.closest('.table-row').remove();
 			});
 
-			const tableRowEls = [ ...document.querySelectorAll('.table-row') ];
-			titleEl.innerText = `Задачи ${tableRowEls.length}`;
+			getAndRenderTasks();
 
+			const tableRowEls = [ ...document.querySelectorAll('.table-row') ];
 			if (!tableRowEls.length) {
 				titleEl.innerText = `Задачи`;
 				noTasksMessageEl.classList.remove('hidden');
@@ -484,7 +485,7 @@
 			renderTask(task);
 		});
 
-		titleEl.innerText = `Задачи ${tasks.length + parseInt(tasksCount)}`;
+		titleEl.innerText = `Задачи ${ tasksCount }`;
 
 		const checkboxEls = [ ...document.querySelectorAll('.checkbox') ];
 		checkboxEls.forEach(checkboxEl => {
@@ -499,7 +500,7 @@
 			});
 		});
 
-		if (parseInt(tasksCount) >= parseInt(portionLength)) {
+		if (tasksCount >= parseInt(portionLength)) {
 			const tableRowEl = document.querySelector('.table-row:last-child');
 			observer.observe(tableRowEl);
 		}
