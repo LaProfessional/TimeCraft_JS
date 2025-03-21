@@ -12,9 +12,6 @@ const pool = new Pool({
     password: 'qwerty321',
     port: 5432,
 });
-pool.connect().then(() => {
-    console.log('Connected to PostgreSQL and table "tasks" is accessible');
-});
 
 const PORT = 5000;
 const app = express();
@@ -41,11 +38,11 @@ app.get('/task-login', (req, response) => {
 
 app.get('/tasks', async (req, response) => {
     const {
-        offset: offset,
-        search: search,
-        field: field,
-        order: order,
-        id: taskId,
+        offset,
+        search,
+        field,
+        order,
+        taskId,
     } = req.query;
     const limit = 20;
     let tasks;
