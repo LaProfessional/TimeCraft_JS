@@ -127,19 +127,19 @@
     padding-top: 30px;
 }
 
-.author-container {
+.author-wrapper {
     display: flex;
     justify-content: center;
 
     padding-top: 30px;
 }
 
-.author {
+.author-link {
     color: #f2f2f2;
     font-size: 12px;
 }
 
-.author:hover {
+.author-link:hover {
     border-bottom: 1px solid #f2f2f2;
 }
 
@@ -160,23 +160,18 @@
     table-layout: fixed;
     min-width: 800px;
     width: 100%;
+    border: 1px solid #f2f2f2;
 }
 
-.table-header-row {
-    position: sticky;
-    top: -1px;
-    z-index: 100;
-}
-
-.table-header-cell,
 .table-cell {
-    border: 1px solid #ddd;
+    border: 1px solid #f2f2f2;
     padding: 8px;
 }
 
 .table-header-cell {
     background-color: #f4f4f4;
     font-weight: bold;
+    padding: 8px;
 }
 
 .table-cell:nth-child(1),

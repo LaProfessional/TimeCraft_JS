@@ -81,7 +81,11 @@ sortOptionsEl.addEventListener('change', () => {
 
 const quickSearchEl = document.querySelector('.quick-search');
 let searchTimeoutId;
+let previousSearchValue = '';
 quickSearchEl.addEventListener('input', () => {
+	const isPreviousValue = checkPreviousSearchValue();
+	if (isPreviousValue) return;
+
 	clearTimeout(searchTimeoutId);
 
 	searchTimeoutId = setTimeout(() => {
@@ -90,15 +94,29 @@ quickSearchEl.addEventListener('input', () => {
 	}, 500);
 });
 quickSearchEl.addEventListener('keydown', e => {
+	const isPreviousValue = checkPreviousSearchValue();
+	if (isPreviousValue) return;
+
 	if (e.key === 'Enter') {
 		tableBodyEl.innerText = '';
 		getAndRenderTasks();
 	}
 });
 quickSearchEl.addEventListener('blur', () => {
+	const isPreviousValue = checkPreviousSearchValue();
+	if (isPreviousValue) return;
+
 	tableBodyEl.innerText = '';
 	getAndRenderTasks();
 });
+
+const checkPreviousSearchValue = () => {
+	const currentSearchValue = quickSearchEl.value.trim();
+
+	if (currentSearchValue === previousSearchValue) return true;
+	previousSearchValue = currentSearchValue;
+	return false;
+};
 
 const generateQueryString = params => {
 	const urlParams = new URLSearchParams;
@@ -112,9 +130,6 @@ const generateQueryString = params => {
 const renderTask = task => {
 	const {
 		id,
-		creationDatetime,
-		title,
-		description,
 		startDatetime,
 		endDatetime,
 	} = task;
@@ -203,6 +218,8 @@ const renderTasks = tasksObject => {
 		});
 	});
 
+	if (tasksCount < 20) return;
+
 	if (tasksCount >= parseInt(portionLength)) {
 		const tableRowEl = document.querySelector('.table-row:last-child');
 		observer.observe(tableRowEl);
@@ -221,7 +238,7 @@ const observer = new IntersectionObserver(entries => {
 const getAndRenderTasks = () => {
 	clearTimeout(searchTimeoutId);
 
-	const search = { search: quickSearchEl.value.trim() };
+	const search = quickSearchEl.value.trim();
 	const [ field, order ] = sortOptionsEl.value.split('|');
 
 	const tableRowEls = [ ...document.querySelectorAll('.table-row') ];
@@ -233,7 +250,7 @@ const getAndRenderTasks = () => {
 };
 
 const getTasks = (search, sort, offset) => {
-	const queryObject = { ...search, ...sort };
+	const queryObject = { search, ...sort };
 	const queryString = generateQueryString(queryObject);
 
 	return fetch(`/tasks?${ queryString }&offset=${ offset }`, {

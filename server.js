@@ -16,7 +16,7 @@ pool.connect().then(() => {
     console.log('Connected to PostgreSQL and table "tasks" is accessible');
 });
 
-const PORT = 3000;
+const PORT = 5000;
 const app = express();
 
 app.use(express.static('public'));

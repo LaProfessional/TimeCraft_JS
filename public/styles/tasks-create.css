@@ -54,15 +54,13 @@
     border-radius: 100%;
 
     fill: #5a3825;
-    filter: brightness(0) saturate(100%) invert(15%) sepia(42%) saturate(500%) hue-rotate(10deg);
-    transition: transform 0.2s, filter 0.3s;
+    transition: transform 0.2s;
 
     cursor: pointer;
 }
 
 .btn-close:hover {
     transform: rotate(90deg) scale(1.2);
-    filter: brightness(0) saturate(100%) invert(50%) sepia(80%) saturate(500%) hue-rotate(350deg);
 }
 
 .details {
