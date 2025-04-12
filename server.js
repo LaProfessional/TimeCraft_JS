@@ -42,7 +42,7 @@ app.get('/tasks', async (req, response) => {
         search,
         field,
         order,
-        taskId,
+        id,
     } = req.query;
     const limit = 20;
     let tasks;
@@ -50,7 +50,7 @@ app.get('/tasks', async (req, response) => {
 
     const getTasksCount = async (search, username) => {
         let countQuery = `SELECT COUNT(*) FROM tasks WHERE username = $1`;
-        let queryParams = [username];
+        let queryParams = [ username ];
 
         if (search) {
             countQuery += ` AND (title ILIKE $2 OR description ILIKE $2)`;
@@ -103,7 +103,7 @@ app.get('/tasks', async (req, response) => {
         tasks = sortedValues.rows;
     }
     // ----------------------------------------------- //
-    if (taskId) {
+    if (id) {
         const getTask = `
             SELECT 
                 id,
@@ -116,7 +116,7 @@ app.get('/tasks', async (req, response) => {
             WHERE id = ($1)
         ;`;
 
-        const getTaskRes = await pool.query(getTask, [ taskId ]);
+        const getTaskRes = await pool.query(getTask, [ id ]);
         const task = getTaskRes.rows[0];
 
         const res = convertToCamelCase(task);
